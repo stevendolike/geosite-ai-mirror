@@ -29,8 +29,8 @@ jobs:
       - name: Build trimmed geosite-ai.dat
         run: |
           set -e
-          mkdir -p dist
-          python3 build_dat.py dlc.dat dist/geosite-ai.dat \
+          mkdir -p docs
+          python3 build_dat.py dlc.dat docs/geosite-ai.dat \
             --category "category-ai-!cn" \
             --out-category "CATEGORY-AI-!CN" \
             --exclude "xai,google-deepmind"
@@ -38,22 +38,22 @@ jobs:
       - name: Sanity gate
         run: |
           set -e
-          kept=$(wc -l < dist/geosite-ai.dat.list)
-          removed=$(wc -l < dist/geosite-ai.dat.removed)
-          size=$(wc -c < dist/geosite-ai.dat)
+          kept=$(wc -l < docs/geosite-ai.dat.list)
+          removed=$(wc -l < docs/geosite-ai.dat.removed)
+          size=$(wc -c < docs/geosite-ai.dat)
           echo "kept=$kept removed=$removed size=$size"
           [ "$kept" -ge 100 ] || { echo "FAIL: kept too small"; exit 1; }
           [ "$removed" -ge 50 ] || { echo "FAIL: exclusions vanished upstream?"; exit 1; }
           [ "$size" -gt 2000 ] || { echo "FAIL: dat too small"; exit 1; }
-          grep -qx "chatgpt.com" dist/geosite-ai.dat.list || { echo "FAIL: chatgpt.com missing"; exit 1; }
-          ! grep -qxE "grok\\.com|x\\.ai|gemini\\.google\\.com" dist/geosite-ai.dat.list || { echo "FAIL: excluded domain leaked"; exit 1; }
+          grep -qx "chatgpt.com" docs/geosite-ai.dat.list || { echo "FAIL: chatgpt.com missing"; exit 1; }
+          ! grep -qxE "grok\\.com|x\\.ai|gemini\\.google\\.com" docs/geosite-ai.dat.list || { echo "FAIL: excluded domain leaked"; exit 1; }
 
-      - name: Commit dist if changed
+      - name: Commit docs if changed
         run: |
           set -e
           git config user.name "geosite-ai-bot"
           git config user.email "geosite-ai-bot@users.noreply.github.com"
-          git add -f dist
+          git add -f docs
           if git diff --cached --quiet; then
             echo "no change — nothing to commit"
           else
