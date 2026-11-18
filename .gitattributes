@@ -1,0 +1,9 @@
+*.dat binary
+*.dat.list -text
+*.dat.removed -text
+*.dat.sha256 eol=lf
+*.yml eol=lf
+*.md text eol=lf
+*.py text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf

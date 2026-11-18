@@ -1,0 +1,10 @@
+dlc.dat
+dlc.dat.xz
+dlc-official.dat
+working-live.dat
+datafiles.json
+rel.json
+geosite-ai-v2.dat*
+*.bak*
+abtest-config.json
+build_geosite_ai.py
